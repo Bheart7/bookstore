@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
-import CartItem from "./components/CartItem";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useCart } from "react-use-cart";
 import axios from "axios";
 import {
   formatDate,
@@ -10,13 +12,15 @@ import {
   getNumber,
   moneyFormatter,
 } from "./components/helper";
+import { CartProvider } from "react-use-cart";
+import Cart from "./components/Cart";
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
   const [cart, setCart] = useState([]);
-  const [amount, setAmount] = useState([]);
-  const [cartTotal, setCartTotal] = useState(0);
+  const [cartSum, setCartSum] = useState(0);
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -30,46 +34,16 @@ function App() {
       });
   }, []);
 
-  const handleCart = (id) => {
+  const handleCart = (id, items) => {
+    setCart(items);
     let tempCart = [...cart];
     let item = books.filter((book) => book.id === id);
     tempCart.push(item);
     setCart(tempCart);
 
     // add cart total
-    let total = cartTotal + getNumber(currencyConv(item[0].price));
-    setCartTotal(total);
-    console.log(cartTotal);
-  };
-
-  const inCart = (id) => {
-    let status;
-    // console.log(books);
-    // status = cart.filter((item) => item.id === id) || false;
-    // console.log(`Status of ${id}`, status);
-  };
-
-  const showCart = () => {
-    const items = cart.map((item, i) => {
-      return (
-        <div className="mb-3" key={i}>
-          <CartItem
-            id={item[0].id}
-            name={item[0]["name "]}
-            image={item[0].image}
-            price={currencyConv(item[0].price)}
-            author={item[0].author}
-            genre={item[0].genre}
-          />
-        </div>
-      );
-    });
-
-    if (cart.length >= 1) {
-      return items;
-    } else {
-      return <p>No items in the cart</p>;
-    }
+    let total = cartSum + getNumber(currencyConv(item[0].price));
+    setCartSum(total);
   };
 
   const handleCards = () => {
@@ -77,8 +51,8 @@ function App() {
       return (
         <div className="col-lg-4 mb-3" key={item.id}>
           <Card
+            item={item}
             handleCart={handleCart}
-            inCart={inCart}
             id={item.id}
             name={item["name "]}
             image={item.image}
@@ -101,26 +75,20 @@ function App() {
             <div className="col-lg-10">
               <div className="row">{items}</div>
             </div>
-            <div className="col-lg-2">
-              <div
-                className="d-flex flex-column p-3 text-white bg-dark"
-                style={{ width: "280px" }}
-              >
-                <h1>Cart Items</h1>
-                <p>Cart Total: {moneyFormatter(cartTotal)}</p>
-                {showCart()}
-              </div>
-            </div>
+            <Cart cartSum={cartSum} setCartSum={setCartSum} cart={cart} />
           </div>
         </div>
       );
     }
   };
   return (
-    <div>
-      <Navbar />
-      {handleCards()}
-    </div>
+    <CartProvider>
+      <ToastContainer />
+      <div>
+        <Navbar />
+        {handleCards()}
+      </div>
+    </CartProvider>
   );
 }
 

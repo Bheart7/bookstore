@@ -1,4 +1,5 @@
 import React from "react";
+import { useCart } from "react-use-cart";
 
 const Card = ({
   id,
@@ -10,8 +11,10 @@ const Card = ({
   genre,
   published_date,
   handleCart,
-  inCart,
+  item,
+  setCart,
 }) => {
+  const { addItem, items } = useCart();
   return (
     <div className="card" style={{ width: "10 rem" }}>
       <img className="card-img-top" src={image} alt={name} />
@@ -27,8 +30,10 @@ const Card = ({
         <button
           type="button"
           className="btn btn-dark"
-          onClick={() => handleCart(id)}
-          disabled={inCart(id)}
+          onClick={() => {
+            addItem(item);
+            handleCart(id, items);
+          }}
         >
           Add to Cart
         </button>
