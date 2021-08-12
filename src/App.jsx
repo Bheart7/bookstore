@@ -4,13 +4,19 @@ import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import CartItem from "./components/CartItem";
 import axios from "axios";
-import { formatDate, currencyConv } from "./components/helper";
+import {
+  formatDate,
+  currencyConv,
+  getNumber,
+  moneyFormatter,
+} from "./components/helper";
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
   const [cart, setCart] = useState([]);
-  const [disabled, setDisabled] = useState(false);
+  const [amount, setAmount] = useState([]);
+  const [cartTotal, setCartTotal] = useState(0);
   useEffect(() => {
     setLoading(true);
     axios
@@ -29,6 +35,11 @@ function App() {
     let item = books.filter((book) => book.id === id);
     tempCart.push(item);
     setCart(tempCart);
+
+    // add cart total
+    let total = cartTotal + getNumber(currencyConv(item[0].price));
+    setCartTotal(total);
+    console.log(cartTotal);
   };
 
   const inCart = (id) => {
@@ -46,7 +57,7 @@ function App() {
             id={item[0].id}
             name={item[0]["name "]}
             image={item[0].image}
-            price={item[0].price}
+            price={currencyConv(item[0].price)}
             author={item[0].author}
             genre={item[0].genre}
           />
@@ -87,15 +98,16 @@ function App() {
       return (
         <div className="container my-5">
           <div className="row">
-            <div className="col-lg-9">
+            <div className="col-lg-10">
               <div className="row">{items}</div>
             </div>
-            <div className="col-lg-3">
+            <div className="col-lg-2">
               <div
                 className="d-flex flex-column p-3 text-white bg-dark"
                 style={{ width: "280px" }}
               >
                 <h1>Cart Items</h1>
+                <p>Cart Total: {moneyFormatter(cartTotal)}</p>
                 {showCart()}
               </div>
             </div>

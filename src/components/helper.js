@@ -12,8 +12,21 @@ export const formatDate = (date) => {
 
 export const currencyConv = (currency) => {
   // array of strings
-  let arr = currency.split("").filter((string) => string !== "$");
+  let arr = currency
+    .toString()
+    .split("")
+    .filter((string) => string !== "$");
   let cur = Number(arr.join("")) * 118;
+  return moneyFormatter(cur);
+};
+
+export const getNumber = (price) => {
+  let tempCur = price.toString().replace("Rs.", "");
+  let cur = Number(tempCur.replaceAll(",", ""));
+  return cur;
+};
+
+export const moneyFormatter = (cur) => {
   let formattedMoney = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
