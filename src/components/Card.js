@@ -10,6 +10,7 @@ const Card = ({
   genre,
   published_date,
   handleCart,
+  inCart,
 }) => {
   return (
     <div className="card" style={{ width: "10 rem" }}>
@@ -27,7 +28,7 @@ const Card = ({
           type="button"
           className="btn btn-dark"
           onClick={() => handleCart(id)}
-          disabled={true}
+          disabled={inCart(id)}
         >
           Add to Cart
         </button>

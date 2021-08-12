@@ -4,7 +4,7 @@ import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import CartItem from "./components/CartItem";
 import axios from "axios";
-import { formatDate } from "./components/helper";
+import { formatDate, currencyConv } from "./components/helper";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -32,8 +32,10 @@ function App() {
   };
 
   const inCart = (id) => {
-    let status = cart.filter((item) => item.id === id);
-    console.log(status);
+    let status;
+    // console.log(books);
+    // status = cart.filter((item) => item.id === id) || false;
+    // console.log(`Status of ${id}`, status);
   };
 
   const showCart = () => {
@@ -65,10 +67,11 @@ function App() {
         <div className="col-lg-4 mb-3" key={item.id}>
           <Card
             handleCart={handleCart}
+            inCart={inCart}
             id={item.id}
             name={item["name "]}
             image={item.image}
-            price={item.price}
+            price={currencyConv(item.price)}
             stock={item.stock}
             author={item.author}
             genre={item.genre}

@@ -1,7 +1,6 @@
 import React from "react";
 
 const CartItem = ({ id, name, image, price, author, genre }) => {
-  console.log("Caritem", name);
   return (
     <div className="card text-dark">
       <div className="card-body">

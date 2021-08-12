@@ -9,3 +9,15 @@ export const formatDate = (date) => {
 
   return [day, month, year].join("-");
 };
+
+export const currencyConv = (currency) => {
+  // array of strings
+  let arr = currency.split("").filter((string) => string !== "$");
+  let cur = Number(arr.join("")) * 118;
+  let formattedMoney = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(cur);
+  let nepali_cur = formattedMoney.toString().replace("₹", "Rs.");
+  return nepali_cur;
+};
