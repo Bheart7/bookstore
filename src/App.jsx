@@ -10,6 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [books, setBooks] = useState([]);
   const [cart, setCart] = useState([]);
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     setLoading(true);
     axios
@@ -28,21 +29,24 @@ function App() {
     let item = books.filter((book) => book.id === id);
     tempCart.push(item);
     setCart(tempCart);
-    console.log("Cart", cart);
+  };
+
+  const inCart = (id) => {
+    let status = cart.filter((item) => item.id === id);
+    console.log(status);
   };
 
   const showCart = () => {
-    console.log(cart);
     const items = cart.map((item, i) => {
       return (
         <div className="mb-3" key={i}>
           <CartItem
-            id={item.id}
-            name={item.name}
-            image={item.image}
-            price={item.price}
-            author={item.author}
-            genre={item.genre}
+            id={item[0].id}
+            name={item[0]["name "]}
+            image={item[0].image}
+            price={item[0].price}
+            author={item[0].author}
+            genre={item[0].genre}
           />
         </div>
       );
@@ -62,7 +66,7 @@ function App() {
           <Card
             handleCart={handleCart}
             id={item.id}
-            name={item.name}
+            name={item["name "]}
             image={item.image}
             price={item.price}
             stock={item.stock}

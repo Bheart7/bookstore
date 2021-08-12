@@ -1,12 +1,16 @@
 import React from "react";
 
 const CartItem = ({ id, name, image, price, author, genre }) => {
+  console.log("Caritem", name);
   return (
     <div className="card text-dark">
       <div className="card-body">
-        <p className="card-text">Name: {name}</p>
+        <h5 className="card-title">{name}</h5>
         <p className="card-text">Author: {author}</p>
         <p className="card-text">Price: {price}</p>
+        <button type="button" className="btn btn-dark">
+          Buy now
+        </button>
       </div>
     </div>
   );
