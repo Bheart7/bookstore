@@ -9,6 +9,7 @@ const Card = ({
   author,
   genre,
   published_date,
+  handleCart,
 }) => {
   return (
     <div className="card" style={{ width: "10 rem" }}>
@@ -22,9 +23,13 @@ const Card = ({
         <p className="card-text">Genre: {genre}</p>
         <p className="card-text">Stock: {stock}</p>
         <p className="card-text">Price: {price}</p>
-        <a href="#" className="btn btn-primary">
+        <button
+          type="button"
+          className="btn btn-dark"
+          onClick={() => handleCart(id)}
+        >
           Add to Cart
-        </a>
+        </button>
       </div>
     </div>
   );
