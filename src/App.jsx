@@ -2,15 +2,10 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import {
-  formatDate,
-  currencyConv,
-  getNumber,
-  moneyFormatter,
-} from "./components/helper";
+import { formatDate, currencyConv, getNumber } from "./components/helper";
 import { CartProvider } from "react-use-cart";
 import Cart from "./components/Cart";
 
@@ -19,6 +14,8 @@ function App() {
   const [books, setBooks] = useState([]);
   const [cart, setCart] = useState([]);
   const [cartSum, setCartSum] = useState(0);
+  const [genre, setGenre] = useState("");
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -26,6 +23,7 @@ function App() {
       .get("/list_books")
       .then((res) => {
         setBooks(res.data);
+        setData(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -59,8 +57,17 @@ function App() {
     setCartSum(total);
   };
 
+  const handleGenre = (e) => {
+    setGenre(e);
+    let items = [...data];
+    console.log("genre", e);
+    items = items.filter((book) => book.genre.includes(genre));
+    setBooks(items);
+  };
+
   const handleCards = () => {
-    const items = books.map((item, i) => {
+    let items = books.map((item, i) => {
+      console.log(genre);
       return (
         <div className="col-lg-4 mb-3" key={item.id}>
           <Card
@@ -78,33 +85,43 @@ function App() {
         </div>
       );
     });
-
     if (loading) {
       return <div className="d-flex justify-content-center mt-3">Loading</div>;
     } else {
       return (
-        <div className="container my-5">
-          <div className="row">
-            <div className="col-lg-10">
-              <div className="row">{items}</div>
+        <>
+          <Navbar handleGenre={handleGenre} />
+          <div className="container my-5">
+            <div className="row">
+              <div className="col-lg-10">
+                <p>Current Genre: {genre}</p>
+                <div className="row">{items}</div>
+              </div>
+              <Cart
+                cartSum={cartSum}
+                removeCart={removeCart}
+                handleCart={handleCart}
+              />
             </div>
-            <Cart
-              cartSum={cartSum}
-              removeCart={removeCart}
-              handleCart={handleCart}
-            />
           </div>
-        </div>
+        </>
       );
     }
   };
   return (
     <CartProvider>
-      <ToastContainer />
-      <div>
-        <Navbar />
-        {handleCards()}
-      </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <div>{handleCards()}</div>
     </CartProvider>
   );
 }

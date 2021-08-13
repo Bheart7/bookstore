@@ -12,11 +12,9 @@ const Card = ({
   published_date,
   handleCart,
   item,
-  setCart,
 }) => {
   const { addItem, items } = useCart();
   let quantity = 0;
-  console.log("items", items);
   if (items) {
     items.forEach((item) => {
       if (item.id === id) {

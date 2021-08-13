@@ -10,7 +10,6 @@ const CartItem = ({
   removeItem,
   handleCart,
   removeCart,
-  genre,
   quantity,
   stock,
 }) => {

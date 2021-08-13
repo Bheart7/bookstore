@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import { useCart } from "react-use-cart";
 import CartItem from "../components/CartItem";
@@ -15,7 +15,17 @@ const Cart = ({ cartSum, removeCart, handleCart }) => {
     emptyCart,
   } = useCart();
 
-  if (isEmpty) return <h1 className="text-center">Your cart is Empty</h1>;
+  if (isEmpty)
+    return (
+      <div className="col-lg-2">
+        <div
+          className="d-flex flex-column p-3 text-white bg-dark"
+          style={{ width: "280px" }}
+        >
+          <h3 className="text-center">Your cart is Empty</h3>
+        </div>
+      </div>
+    );
 
   if (totalUniqueItems >= 5) {
     toast.error("Can't add more than 5 genres");

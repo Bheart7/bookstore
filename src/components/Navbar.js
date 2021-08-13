@@ -1,6 +1,6 @@
 import React from "react";
 
-const Navbar = () => {
+const Navbar = ({ handleGenre }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand" href="#">
@@ -30,7 +30,51 @@ const Navbar = () => {
               About
             </a>
           </li>
+          <li className="nav-item dropdown">
+            <a
+              className="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Genre
+            </a>
+            <div
+              className="dropdown-menu"
+              aria-labelledby="navbarDropdown"
+              onClick={(e) => handleGenre(e.target.innerText)}
+            >
+              <a className="dropdown-item" href="#">
+                Action
+              </a>
+              <a className="dropdown-item" href="#">
+                Comedy
+              </a>
+              <a className="dropdown-item" href="#">
+                Drama
+              </a>
+              <a className="dropdown-item" href="#">
+                Crime
+              </a>
+              <a className="dropdown-item" href="#">
+                Thriller
+              </a>
+              <a className="dropdown-item" href="#">
+                Sci-Fi
+              </a>
+              <a className="dropdown-item" href="#">
+                Horror
+              </a>
+              <a className="dropdown-item" href="#">
+                Musical
+              </a>
+            </div>
+          </li>
         </ul>
+
         <form className="form-inline my-2 my-lg-0">
           <input
             className="form-control mr-sm-2"
