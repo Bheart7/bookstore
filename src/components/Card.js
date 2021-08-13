@@ -15,6 +15,15 @@ const Card = ({
   setCart,
 }) => {
   const { addItem, items } = useCart();
+  let quantity = 0;
+  console.log("items", items);
+  if (items) {
+    items.forEach((item) => {
+      if (item.id === id) {
+        quantity = item.quantity;
+      }
+    });
+  }
   return (
     <div className="card" style={{ width: "10 rem" }}>
       <img className="card-img-top" src={image} alt={name} />
@@ -34,6 +43,7 @@ const Card = ({
             addItem(item);
             handleCart(id, items);
           }}
+          disabled={quantity >= stock}
         >
           Add to Cart
         </button>

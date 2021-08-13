@@ -4,13 +4,12 @@ import { useCart } from "react-use-cart";
 import CartItem from "../components/CartItem";
 import { currencyConv, moneyFormatter, getNumber } from "../components/helper";
 
-const Cart = ({ cart, cartSum, setCartSum }) => {
+const Cart = ({ cartSum, removeCart, handleCart }) => {
   const {
     isEmpty,
     totalUniqueItems,
     items,
     totalItems,
-    cartTotal,
     updateItemQuantity,
     removeItem,
     emptyCart,
@@ -42,8 +41,9 @@ const Cart = ({ cart, cartSum, setCartSum }) => {
         {items.map((item, i) => {
           return (
             <div className="mb-3" key={i}>
-              {console.log(item)}
               <CartItem
+                handleCart={handleCart}
+                removeCart={removeCart}
                 removeItem={removeItem}
                 updateItemQuantity={updateItemQuantity}
                 quantity={item.quantity}
@@ -52,6 +52,7 @@ const Cart = ({ cart, cartSum, setCartSum }) => {
                 price={currencyConv(item.price)}
                 author={item.author}
                 genre={item.genre}
+                stock={item.stock}
               />
             </div>
           );

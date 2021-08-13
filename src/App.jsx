@@ -4,7 +4,6 @@ import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useCart } from "react-use-cart";
 import axios from "axios";
 import {
   formatDate,
@@ -46,6 +45,20 @@ function App() {
     setCartSum(total);
   };
 
+  const removeCart = (id, items) => {
+    setCart(items);
+    let tempCart = [...cart];
+    let item = books.filter((book) => book.id === id);
+    tempCart = books.filter((book) => book.id !== id);
+    setCart(tempCart);
+    let total = 0;
+    // remove cart total
+    if (cartSum >= 0) {
+      total = cartSum - getNumber(currencyConv(item[0].price));
+    }
+    setCartSum(total);
+  };
+
   const handleCards = () => {
     const items = books.map((item, i) => {
       return (
@@ -75,7 +88,11 @@ function App() {
             <div className="col-lg-10">
               <div className="row">{items}</div>
             </div>
-            <Cart cartSum={cartSum} setCartSum={setCartSum} cart={cart} />
+            <Cart
+              cartSum={cartSum}
+              removeCart={removeCart}
+              handleCart={handleCart}
+            />
           </div>
         </div>
       );
